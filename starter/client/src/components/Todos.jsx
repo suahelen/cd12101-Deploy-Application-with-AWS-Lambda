@@ -77,13 +77,14 @@ export function Todos() {
   async function onTodoDelete(todoId) {
     try {
       const accessToken = await getAccessTokenSilently({
-        audience: `https://test-endpoint.auth0.com/api/v2/`,
-        scope: 'delete:todo'
+        audience: `https://dev-3q0ye4hgaabznqpa.eu.auth0.com/api/v2/`,
+        scope: 'delete:todos'
       })
       await deleteTodo(accessToken, todoId)
       setTodos(todos.filter((todo) => todo.todoId !== todoId))
     } catch (e) {
-      alert('Todo deletion failed')
+      // alert('Todo deletion failed')
+      console.error(e)
     }
   }
 
@@ -91,8 +92,8 @@ export function Todos() {
     try {
       const todo = todos[pos]
       const accessToken = await getAccessTokenSilently({
-        audience: `https://test-endpoint.auth0.com/api/v2/`,
-        scope: 'write:todo'
+        audience: `https://dev-3q0ye4hgaabznqpa.eu.auth0.com/api/v2/`,
+        scope: 'write:todos'
       })
       await patchTodo(accessToken, todo.todoId, {
         name: todo.name,
@@ -106,7 +107,7 @@ export function Todos() {
       )
     } catch (e) {
       console.log('Failed to check a TODO', e)
-      alert('Todo deletion failed')
+      // alert('Todo deletion failed')
     }
   }
 
@@ -114,7 +115,7 @@ export function Todos() {
     navigate(`/todos/${todoId}/edit`)
   }
 
-  const { user, getAccessTokenSilently } = useAuth0()
+  const { user, getAccessTokenSilently, loginWithRedirect } = useAuth0()
   const [todos, setTodos] = useState([])
   const [loadingTodos, setLoadingTodos] = useState(true)
   const navigate = useNavigate()
@@ -128,8 +129,10 @@ export function Todos() {
     async function foo() {
       try {
         const accessToken = await getAccessTokenSilently({
-          audience: `https://test-endpoint.auth0.com/api/v2/`,
-          scope: 'read:todos'
+          authorizationParams: {
+            audience: `https://dev-3q0ye4hgaabznqpa.eu.auth0.com/api/v2/`,
+            scope: 'read:todos'
+          }
         })
         console.log('Access token: ' + accessToken)
         const todos = await getTodos(accessToken)
@@ -137,6 +140,7 @@ export function Todos() {
         setLoadingTodos(false)
       } catch (e) {
         alert(`Failed to fetch todos: ${e.message}`)
+        console.error(e)
       }
     }
     foo()
