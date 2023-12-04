@@ -126,10 +126,8 @@ export class TodosAccess {
             Bucket: this.bucketName,
             Key: todoId
         });
-        this.logger.info('Generating upload URL: ', command);
         const uploadUrl = getSignedUrl(this.s3Client, command, { expiresIn: this.urlExpiration });
-
-        this.logger.info('Generated upload URL: ', uploadUrl);
+        this.logger.info('Generated upload url.');
         return uploadUrl;
     }
 
