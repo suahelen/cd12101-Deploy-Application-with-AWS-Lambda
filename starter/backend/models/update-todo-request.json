@@ -1,0 +1,19 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "dueDate": {
+            "type": "string",
+            "format": "date"
+        },
+        "done": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "done"
+    ],
+    "additionalProperties": false
+}
